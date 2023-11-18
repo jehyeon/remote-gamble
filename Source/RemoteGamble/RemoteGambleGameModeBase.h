@@ -14,4 +14,8 @@ class REMOTEGAMBLE_API ARemoteGambleGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+	ARemoteGambleGameModeBase();
+
+public:
+	virtual void BeginPlay() override;
 };
