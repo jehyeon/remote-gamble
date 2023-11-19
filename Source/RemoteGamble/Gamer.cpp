@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Gamer.h"
 
 // Sets default values
@@ -32,30 +31,55 @@ void AGamer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("RotateView", IE_Pressed, this, &AGamer::OnPressMouseRight);
+	PlayerInputComponent->BindAction("RotateView", IE_Released, this, &AGamer::OnReleaseMouseRight);
+
 	PlayerInputComponent->BindAxis("LookUp", this, &AGamer::LookUp);
-	PlayerInputComponent->BindAxis("Turn", this, &AGamer::LookUp);
+	PlayerInputComponent->BindAxis("Turn", this, &AGamer::Turn);
 	PlayerInputComponent->BindAxis("MoveForward", this, &AGamer::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AGamer::MoveRight);
+	PlayerInputComponent->BindAxis("UpDown", this, &AGamer::UpDown);
 }
 
 void AGamer::LookUp(float AxisValue)
 {
+	if (isPressedMouseRight)
+	{
+		AddControllerPitchInput(AxisValue);
+	}
 }
 
 void AGamer::Turn(float AxisValue)
 {
+	if (isPressedMouseRight)
+	{
+		AddControllerYawInput(AxisValue);
+	}
 }
 
 void AGamer::MoveForward(float AxisValue)
 {
+	AddMovementInput(GetActorForwardVector(), AxisValue);
 }
 
 void AGamer::MoveRight(float AxisValue)
 {
+	AddMovementInput(GetActorRightVector(), AxisValue);
+}
+
+void AGamer::UpDown(float AxisValue)
+{
+	AddMovementInput(FVector(0.f, 0.f, 1.f), AxisValue);
 }
 
 void AGamer::OnPressMouseRight()
 {
-	UE_LOG(LogTemp, Log, TEXT("Pressed"));
+	//UE_LOG(LogTemp, Log, TEXT("Pressed"));
+	isPressedMouseRight = true;
+}
+
+void AGamer::OnReleaseMouseRight()
+{
+	//UE_LOG(LogTemp, Log, TEXT("Release"));
+	isPressedMouseRight = false;
 }
 

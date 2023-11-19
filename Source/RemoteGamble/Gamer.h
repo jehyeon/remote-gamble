@@ -40,7 +40,13 @@ public:
 	void MoveRight(float AxisValue);
 
 	UFUNCTION()
+	void UpDown(float AxisValue);
+
+	UFUNCTION()
 	void OnPressMouseRight();
+
+	UFUNCTION()
+	void OnReleaseMouseRight();
 
 private:
 	UPROPERTY(VisibleAnywhere)
