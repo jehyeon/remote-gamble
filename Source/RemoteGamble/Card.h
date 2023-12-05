@@ -22,6 +22,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	UStaticMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere, Category = "Name")
+	FString CardName;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
