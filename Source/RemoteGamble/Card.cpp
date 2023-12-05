@@ -31,8 +31,3 @@ void ACard::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
-FString ACard::GetTestName()
-{
-	return IMovable::GetTestName();
-}

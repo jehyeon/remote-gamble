@@ -5,8 +5,8 @@
 
 // Add default functionality here for any IMovable functions that are not pure virtual.
 
-FString IMovable::GetTestName()
+void IMovable::OnBeginMouseOver()
 {
 	unimplemented();
-	return FString();
+	UE_LOG(LogTemp, Warning, TEXT("Mouse hover"));
 }

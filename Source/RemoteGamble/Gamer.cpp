@@ -6,7 +6,7 @@
 AGamer::AGamer()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	isPressedMouseRight = false;
 }
@@ -19,11 +19,11 @@ void AGamer::BeginPlay()
 }
 
 // Called every frame
-void AGamer::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
+//void AGamer::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//
+//}
 
 // Called to bind functionality to input
 void AGamer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

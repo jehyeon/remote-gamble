@@ -11,12 +11,16 @@ ADice::ADice()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM(TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM(TEXT("StaticMesh'/Game/SM_Dice.SM_Dice'"));
 
 	if (SM.Succeeded())
 	{
 		Mesh->SetStaticMesh(SM.Object);
 	}
+
+	//Mesh->OnBeginCursorOver.AddDynamic(this, &ADice::CustomOnBeginMouseOver);
+	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	Mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 }
 
 // Called when the game starts or when spawned
@@ -32,4 +36,15 @@ void ADice::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+//void ADice::CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent)
+//{
+//
+//	UE_LOG(LogTemp, Warning, TEXT("Mouse hover"));
+//	if (GEngine)
+//	{
+//		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, TEXT("Mouse Over"));
+//	}
+//}
+
 

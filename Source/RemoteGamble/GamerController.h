@@ -14,4 +14,21 @@ class REMOTEGAMBLE_API AGamerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	AGamerController();
+
+protected:
+	bool bClickedLeft;
+
+public:
+	virtual void SetupInputComponent() override;
+	virtual void PlayerTick(float DeltaTime) override;
+
+	void OnPressMouseLeft();
+	void OnReleaseMouseLeft();
+
+	void MoveObject(AActor* Target, const FVector Destination);
+
+	// 마우스 현재 위치
+	void MoveToMouseCursor();
 };
