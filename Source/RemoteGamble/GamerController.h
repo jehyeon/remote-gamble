@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GamerController.generated.h"
 
+//class AGamer;
 /**
  * 
  */
@@ -17,16 +18,47 @@ class REMOTEGAMBLE_API AGamerController : public APlayerController
 public:
 	AGamerController();
 
+	//virtual void OnPossess(APawn* InPawn) override;
+	//virtual void OnUnPossess() override;
+
 protected:
-	bool bClickedLeft;
+	//AGamer* Gamer;
+
+	bool bPressedLeft;
+	bool bPressedRight;
 
 public:
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
 
+	UFUNCTION()
 	void OnPressMouseLeft();
+
+	UFUNCTION()
 	void OnReleaseMouseLeft();
 
+	UFUNCTION()
+	void OnPressMouseRight();
+
+	UFUNCTION()
+	void OnReleaseMouseRight();
+
+	UFUNCTION()
+	void LookUp(float AxisValue);
+
+	UFUNCTION()
+	void Turn(float AxisValue);
+
+	UFUNCTION()
+	void MoveForward(float AxisValue);
+
+	UFUNCTION()
+	void MoveRight(float AxisValue);
+
+	UFUNCTION()
+	void UpDown(float AxisValue);
+
+	UFUNCTION()
 	void MoveObject(AActor* Target, const FVector Destination);
 
 	// 마우스 현재 위치
