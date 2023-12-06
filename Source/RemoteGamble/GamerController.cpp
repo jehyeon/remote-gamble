@@ -3,6 +3,7 @@
 
 #include "GamerController.h"
 #include "Movable.h"
+#include "Rollable.h"
 //#include "Gamer.h"
 
 AGamerController::AGamerController()
@@ -49,6 +50,8 @@ void AGamerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveForward", this, &AGamerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &AGamerController::MoveRight);
 	InputComponent->BindAxis("UpDown", this, &AGamerController::UpDown);
+
+	InputComponent->BindAction("Roll", IE_Pressed, this, &AGamerController::Roll);
 }
 
 void AGamerController::PlayerTick(float DeltaTime)
@@ -143,6 +146,30 @@ void AGamerController::UpDown(float AxisValue)
 
 void AGamerController::MoveObject(AActor* Target, const FVector Destination)
 {
+}
+
+void AGamerController::Roll()
+{
+	FHitResult Hit;
+	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+	if (Hit.bBlockingHit)
+	{
+		UClass* ActorClass = Hit.Actor->GetClass();
+		if (ActorClass->ImplementsInterface(URollable::StaticClass()))
+		{
+			UStaticMeshComponent* StaticMesh = Cast<UStaticMeshComponent>(Hit.GetComponent());
+			if (IsValid(StaticMesh))
+			{
+				const float pitch = FMath::FRandRange(-180.f, 180.f);
+				const float yaw = FMath::FRandRange(-180.f, 180.f);
+				const float roll = FMath::FRandRange(-180.f, 180.f);
+
+				StaticMesh->SetWorldRotation(FRotator(pitch, yaw, roll));
+				StaticMesh->AddForce(FVector(0.f, 0.f, 1.f) * 50000 * StaticMesh->GetMass());
+			}
+		}
+	}
 }
 
 void AGamerController::MoveToMouseCursor()

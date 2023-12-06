@@ -65,6 +65,9 @@ public:
 	UFUNCTION()
 	void MoveObject(AActor* Target, const FVector Destination);
 
+	UFUNCTION()
+	void Roll();
+
 	// 마우스 현재 위치
 	void MoveToMouseCursor();
 };
