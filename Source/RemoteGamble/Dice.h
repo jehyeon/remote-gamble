@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Movable.h"
 #include "Rollable.h"
+#include "Components/BoxComponent.h"
 #include "Dice.generated.h"
 
 UCLASS()
@@ -20,6 +21,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY()
+	UBoxComponent* CollisionComponent;
+
+	UPROPERTY()
+	FVector Scale;
 
 protected:
 	// Called when the game starts or when spawned

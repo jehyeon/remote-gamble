@@ -9,18 +9,26 @@ ADice::ADice()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Scale = FVector(1.f);
+
+	// Mesh 설정
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM(TEXT("StaticMesh'/Game/SM_Dice.SM_Dice'"));
-
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM(TEXT("StaticMesh'/Game/Mesh/SM_Dice.SM_Dice'"));
 	if (SM.Succeeded())
 	{
 		Mesh->SetStaticMesh(SM.Object);
 	}
 
-	//Mesh->OnBeginCursorOver.AddDynamic(this, &ADice::CustomOnBeginMouseOver);
-	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	Mesh->SetMobility(EComponentMobility::Movable);
+	Mesh->SetSimulatePhysics(true);
+	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+	RootComponent = Mesh;
+
+	// Collision 설정
+	//CollisionComponent = CreateDefaultSubobject<UBoxComponent>("Collision");
+	//CollisionComponent->SetBoxExtent(FVector(200.f, 200.f, 200.f));
+	//CollisionComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
