@@ -5,8 +5,11 @@
 
 // Add default functionality here for any IMovable functions that are not pure virtual.
 
-void IMovable::OnBeginMouseOver()
-{
-	unimplemented();
-	UE_LOG(LogTemp, Warning, TEXT("Mouse hover"));
-}
+//void IMovable::Move(FVector NewLocation)
+//{
+//	AActor* Actor = Cast<AActor>(this);
+//	if (Actor)
+//	{
+//		Actor->SetActorLocation(NewLocation);
+//	}
+//}

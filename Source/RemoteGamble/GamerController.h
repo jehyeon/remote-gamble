@@ -26,6 +26,10 @@ protected:
 
 	bool bPressedLeft;
 	bool bPressedRight;
+	bool bIsMovingObject;
+
+	AActor* TargetActor;
+	FVector MovingActorOffset;
 
 public:
 	virtual void SetupInputComponent() override;

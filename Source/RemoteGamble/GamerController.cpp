@@ -13,6 +13,10 @@ AGamerController::AGamerController()
 
 	bPressedLeft = false;
 	bPressedRight = false;
+	bIsMovingObject = false;
+
+	TargetActor = nullptr;
+	MovingActorOffset = FVector(0.f, 0.f, 100.f);	// temp
 }
 
 //void AGamerController::OnPossess(APawn* InPawn)
@@ -72,6 +76,8 @@ void AGamerController::OnPressMouseRight()
 void AGamerController::OnReleaseMouseRight()
 {
 	bPressedRight = false;
+	bIsMovingObject = false;
+	TargetActor = nullptr;
 }
 
 void AGamerController::LookUp(float AxisValue)
@@ -147,13 +153,36 @@ void AGamerController::MoveToMouseCursor()
 	if (Hit.bBlockingHit)
 	{
 		UClass* ActorClass = Hit.Actor->GetClass();
-
-		if (ActorClass->ImplementsInterface(UMovable::StaticClass()))
+		
+		// Left Click 중인 경우
+		if (bPressedLeft)
 		{
-			//GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red,
-			//	TEXT("Movable Mouse Over"));
+			// 움직이고 있는 Actor가 없는 경우
+			if (!bIsMovingObject)
+			{
+				// Movable Actor일 때 Target Actor 새로 등록
+				if (ActorClass->ImplementsInterface(UMovable::StaticClass()))
+				{
+					bIsMovingObject = true;
+					TargetActor = Hit.GetActor();
 
-			UE_LOG(LogTemp, Warning, TEXT("Movable Mouse Over"));
+					//FVector TargetLocation = TargetActor->GetActorLocation();
+					//TargetActor->SetActorLocation(TargetLocation + MovingActorOffset);
+				}
+			}
+			// 움직이고 있는 Actor가 있는 경우
+			else if (bIsMovingObject && TargetActor)
+			{
+				if (Hit.GetActor() != TargetActor)
+				{
+					TargetActor->SetActorLocation(Hit.Location + MovingActorOffset);
+				}
+			}
+		}
+		else
+		{
+			bIsMovingObject = false;
+			TargetActor = nullptr;
 		}
 	}
 }
