@@ -22,14 +22,12 @@ ACard::ACard()
 		FirstPlaneMesh->SetupAttachment(RootComponent);
 		SecondPlaneMesh->SetupAttachment(RootComponent);
 
-		// FString MaterialName = TEXT("/Game/Textures/") + CardName + TEXT(".") + CardName;
+		// FString MaterialName = TEXT("/Game/Textures/Cards/") + CardName + TEXT(".") + CardName;
 		// UMaterial* FrontMaterial = LoadObject<UMaterial>(nullptr, *MaterialName);
 		// TODO : 카드 뒷면 텍스쳐 구해서 바꿔주기
-		UMaterial* FrontMaterial = LoadObject<UMaterial>(nullptr, TEXT("/Game/Textures/Mat_dice_01.Mat_dice_01")); 
-		UMaterial* BackMaterial = LoadObject<UMaterial>(nullptr, TEXT("/Game/Textures/Mat_dice_02.Mat_dice_02")); 
 
-		FirstPlaneMesh->SetMaterial(0, FrontMaterial);
-		SecondPlaneMesh->SetMaterial(0, BackMaterial);
+		//FirstPlaneMesh->SetMaterial(0, FrontMaterial);
+		//SecondPlaneMesh->SetMaterial(0, BackMaterial);
 
 		FRotator Rotation = FRotator(-180.f, 0.f, 0.f);
 		SecondPlaneMesh->SetRelativeRotation(Rotation);
