@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Containers/Array.h"
 #include "Deck.generated.h"
+
+class ACard;
+class AGamer;
 
 UCLASS()
 class REMOTEGAMBLE_API ADeck : public AActor
@@ -22,5 +26,13 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Any)
+	TArray<ACard*> Cards;
 
+	int32 CardCount();
+	void Shuffle();
+	ACard* Draw();
+	void Split(TArray<AGamer*> Gamers, int32 Count);
+	void Divide(TArray<AGamer*> Gamers);
 };

@@ -14,5 +14,5 @@ AGamer::AGamer()
 void AGamer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+		
 }

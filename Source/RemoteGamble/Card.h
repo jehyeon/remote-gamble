@@ -22,8 +22,12 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, Category = "Name")
+	UPROPERTY(EditAnywhere, Category = "Info")
 	FString CardName; // 모양_넘버 ex) spade_jack, heart_6
+
+	// 카드 앞면(모양, 숫자)이 보이는 상태인지 <- 필요없으면 지우기
+	UPROPERTY(EditAnywhere, Category = "Info")
+	bool IsOpen;
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,4 +36,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void Open();
+	void Hide();
 };
