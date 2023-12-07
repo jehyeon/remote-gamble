@@ -4,26 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Movable.h"
-#include "Turnable.h"
-#include "Card.generated.h"
+#include "Deck.generated.h"
 
 UCLASS()
-class REMOTEGAMBLE_API ACard : public AActor,
-public IMovable, public ITurnable
+class REMOTEGAMBLE_API ADeck : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ACard();
-
-	// Mesh
-	UPROPERTY(VisibleAnywhere, Category = "Mesh")
-	UStaticMeshComponent* Mesh;
-
-	UPROPERTY(EditAnywhere, Category = "Name")
-	FString CardName; // 모양_넘버 ex) spade_jack, heart_6
+	ADeck();
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,4 +22,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 };
