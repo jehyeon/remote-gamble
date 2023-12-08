@@ -19,6 +19,10 @@ public:
 	// Sets default values for this actor's properties
 	ADeck();
 
+	// Mesh
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	UStaticMeshComponent* Mesh;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -32,7 +36,7 @@ public:
 
 	int32 CardCount();
 	void Shuffle();
-	ACard* Draw();
+	void Draw(AGamer* Gamer);
 	void Split(TArray<AGamer*> Gamers, int32 Count);
 	void Divide(TArray<AGamer*> Gamers);
 };
