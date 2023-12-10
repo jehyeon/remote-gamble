@@ -19,6 +19,9 @@ ADeck::ADeck()
 		Mesh->SetStaticMesh(SM.Object);
 	}
 
+	Offset = FVector(0.f, 0.f, 0.75f);
+
+	// Physics & Collision 설정
 	Mesh->SetSimulatePhysics(true);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
@@ -30,6 +33,48 @@ void ADeck::BeginPlay()
 {
 	Super::BeginPlay();
 	FGenericPlatformMath::SRandInit(time(0));
+
+	// 53장 카드 생성(Joker 1장)
+	TArray<FString> CardShapeNames = { TEXT("spade"), TEXT("diamond"), TEXT("heart"), TEXT("club") };
+	for (int32 i = 0; i < CardShapeNames.Num(); i++)
+	{
+		FString ShapeName = CardShapeNames[i];
+		for (int32 j = 1; j <= 13; j++)
+		{
+			// 카드 이름 설정
+			FString CardName = ShapeName + TEXT("_");
+			switch (j)
+			{
+			case 1:
+				CardName += TEXT("ace");
+				break;
+			case 11:
+				CardName += TEXT("jack");
+				break;
+			case 12:
+				CardName += TEXT("queen");
+				break;
+			case 13:
+				CardName += TEXT("king");
+				break;
+			default:
+				CardName += FString::FromInt(j);
+				break;
+			}
+
+			// 카드 생성 후 Cards 에 넣어주기
+			ACard* NewCard = GetWorld()->SpawnActor<ACard>(ACard::StaticClass(), this->GetActorLocation(), FRotator::ZeroRotator);
+			NewCard->InitInDeck(CardName);
+			Cards.Emplace(NewCard);
+		}
+	}
+
+	// 조커 카드 따로 넣어주기
+	ACard* JokerCard = GetWorld()->SpawnActor<ACard>(ACard::StaticClass(), this->GetActorLocation(), FRotator::ZeroRotator);
+	JokerCard->InitInDeck(TEXT("joker"));
+	Cards.Emplace(JokerCard);
+
+	this->Shuffle();
 }
 
 // Called every frame
@@ -52,18 +97,34 @@ void ADeck::Shuffle()
 		Cards[i] = Cards[newIndex];
 		Cards[newIndex] = temp;
 	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("Shuffled : Top Card is now %s."), *Cards[0]->CardName);
 }
 
-void ADeck::Draw(AGamer* Gamer)
+void ADeck::Draw()
 {
-	if (Cards.Num() > 0)
+	if (this->CardCount() > 0)
 	{
-		ACard* ret = Cards[0];
+		ACard* Card = Cards[0];
 		Cards.RemoveAt(0);
-		// TODO : 카드 Spawn Location 지정
-		//FVector CardLocation = 
-	}
+		Card->Hide();
 
+		// Card 위치 설정
+		FVector CardLocation = this->GetActorLocation() + Offset;
+		Card->SetActorLocation(CardLocation);
+		Card->SetVisibility(true);
+
+		// Deck의 높이 변경
+		ChangeHeight();
+
+		//UE_LOG(LogTemp, Warning, TEXT("%f, %s"), CardLocation.Z, *Card->GetName());
+
+		// 남은 카드가 0개였다면 Deck 제거
+		if (this->CardCount() == 0)
+		{
+			this->Destroy();
+		}
+	}
 }
 
 void ADeck::Split(TArray<AGamer*> Gamers, int32 Count)
@@ -78,6 +139,21 @@ void ADeck::Divide(TArray<AGamer*> Gamers)
 {
 	for (int32 i = 0; i < this->CardCount(); i++) 
 	{
-		Draw(Gamers[i]);
+		Draw();
+		// TODO : 각 위치의 플레이어 앞으로 카드 Location 이동시키기
 	}
+}
+
+void ADeck::AddCard(ACard* Card)
+{
+	Cards.Emplace(Card);
+
+	// Deck의 높이 변경
+	ChangeHeight();
+}
+
+void ADeck::ChangeHeight()
+{
+	FVector NewScale = FVector(1.f, 1.f, this->CardCount() / 53.f);
+	SetActorScale3D(NewScale);
 }

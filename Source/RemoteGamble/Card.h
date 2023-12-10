@@ -37,6 +37,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void InitInDeck(FString Name);
 	void Open();
 	void Hide();
+	void SetVisibility(bool IsVisible);
 };

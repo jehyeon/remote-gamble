@@ -3,6 +3,8 @@
 
 #include "Card.h"
 
+#include "Insights/ViewModels/BaseTimingTrack.h"
+
 // Sets default values
 ACard::ACard()
 {
@@ -29,6 +31,19 @@ ACard::ACard()
 void ACard::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+
+// Called every frame
+void ACard::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void ACard::InitInDeck(FString Name)
+{
+	// Name 설정
+	CardName = Name;
 
 	// Material 설정
 	FString FrontMaterialName = TEXT("/Game/Textures/Cards/Mat_") + CardName + TEXT(".Mat_") + CardName;
@@ -41,14 +56,9 @@ void ACard::BeginPlay()
 		Mesh->SetMaterial(1, FrontMaterial);
 		Mesh->SetMaterial(2, BackMaterial);
 	}
-}
 
-
-// Called every frame
-void ACard::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	// Deck에서 소환되었을 때엔 안 보이게 설정
+	this->SetVisibility(false);
 }
 
 void ACard::Open()
@@ -64,3 +74,14 @@ void ACard::Hide()
 	FRotator CurrentRotation = this->GetActorRotation();
 	this->SetActorRotation(FRotator(180.f, CurrentRotation.Yaw, 0.f));
 }
+
+void ACard::SetVisibility(bool IsVisible)
+{
+	SetActorHiddenInGame(!IsVisible);
+	SetActorEnableCollision(IsVisible);
+
+	// 속도 0으로 강제 조정
+	if (IsVisible)
+		Mesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
+}
+

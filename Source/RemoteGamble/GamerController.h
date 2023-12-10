@@ -68,6 +68,15 @@ public:
 	UFUNCTION()
 	void Roll();
 
+	UFUNCTION()
+	void Shuffle();
+
+	UFUNCTION()
+	void Draw();
+
+	UFUNCTION()
+	void OpenOrHideCard();
+
 	// 마우스 현재 위치
 	void MoveToMouseCursor();
 };

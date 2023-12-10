@@ -27,6 +27,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// 덱 위에 카드 올리는 높이
+	FVector Offset;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -36,7 +39,9 @@ public:
 
 	int32 CardCount();
 	void Shuffle();
-	void Draw(AGamer* Gamer);
+	void Draw();
 	void Split(TArray<AGamer*> Gamers, int32 Count);
 	void Divide(TArray<AGamer*> Gamers);
+	void AddCard(ACard* Card);
+	void ChangeHeight();
 };

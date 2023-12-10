@@ -2,6 +2,9 @@
 
 
 #include "GamerController.h"
+
+#include "Card.h"
+#include "Deck.h"
 #include "Movable.h"
 #include "Rollable.h"
 //#include "Gamer.h"
@@ -52,6 +55,9 @@ void AGamerController::SetupInputComponent()
 	InputComponent->BindAxis("UpDown", this, &AGamerController::UpDown);
 
 	InputComponent->BindAction("Roll", IE_Pressed, this, &AGamerController::Roll);
+	InputComponent->BindAction("Shuffle", IE_Pressed, this, &AGamerController::Shuffle);
+	InputComponent->BindAction("Draw", IE_Pressed, this, &AGamerController::Draw);
+	InputComponent->BindAction("OpenOrHideCard", IE_Pressed, this, &AGamerController::OpenOrHideCard);
 }
 
 void AGamerController::PlayerTick(float DeltaTime)
@@ -210,6 +216,63 @@ void AGamerController::MoveToMouseCursor()
 		{
 			bIsMovingObject = false;
 			TargetActor = nullptr;
+		}
+	}
+}
+
+void AGamerController::Shuffle()
+{
+	FHitResult Hit;
+	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+	if (Hit.bBlockingHit)
+	{
+		if (Hit.Actor->IsA(ADeck::StaticClass()))
+		{
+			ADeck* DeckActor = Cast<ADeck>(Hit.Actor);
+			if (DeckActor)
+			{
+				DeckActor->Shuffle();
+			}
+		}
+	}
+}
+
+void AGamerController::Draw()
+{
+	FHitResult Hit;
+	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+	if (Hit.bBlockingHit)
+	{
+		if (Hit.Actor->IsA(ADeck::StaticClass()))
+		{
+			ADeck* DeckActor = Cast<ADeck>(Hit.Actor);
+			if (DeckActor)
+			{
+				DeckActor->Draw();
+			}
+		}
+	}
+}
+
+void AGamerController::OpenOrHideCard()
+{
+	FHitResult Hit;
+	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+	if (Hit.bBlockingHit)
+	{
+		if (Hit.Actor->IsA(ACard::StaticClass()))
+		{
+			ACard* CardActor = Cast<ACard>(Hit.Actor);
+			if (CardActor)
+			{
+				if (CardActor->IsOpen)
+					CardActor->Hide();
+				else
+					CardActor->Open();
+			}
 		}
 	}
 }
