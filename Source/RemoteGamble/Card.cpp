@@ -65,20 +65,22 @@ void ACard::Open()
 {
 	IsOpen = true;
 	FRotator CurrentRotation = this->GetActorRotation();
-	this->SetActorRotation(FRotator(0.f, CurrentRotation.Yaw, 0.f));
+	SetActorRotation(FRotator(0.f, GetActorRotation().Yaw, 0.f));
 }
 
 void ACard::Hide()
 {
 	IsOpen = false;
 	FRotator CurrentRotation = this->GetActorRotation();
-	this->SetActorRotation(FRotator(180.f, CurrentRotation.Yaw, 0.f));
+	SetActorRotation(FRotator(180.f, GetActorRotation().Yaw, 0.f));
 }
 
 void ACard::SetVisibility(bool IsVisible)
 {
 	SetActorHiddenInGame(!IsVisible);
 	SetActorEnableCollision(IsVisible);
+	SetActorTickEnabled(IsVisible);
+	Mesh->SetSimulatePhysics(IsVisible);
 
 	// 속도 0으로 강제 조정
 	if (IsVisible)

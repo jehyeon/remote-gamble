@@ -46,7 +46,7 @@ void ADeck::BeginPlay()
 			switch (j)
 			{
 			case 1:
-				CardName += TEXT("ace");
+				CardName += TEXT("a");
 				break;
 			case 11:
 				CardName += TEXT("jack");
@@ -107,12 +107,12 @@ void ADeck::Draw()
 	{
 		ACard* Card = Cards[0];
 		Cards.RemoveAt(0);
-		Card->Hide();
 
 		// Card 위치 설정
 		FVector CardLocation = this->GetActorLocation() + Offset;
 		Card->SetActorLocation(CardLocation);
 		Card->SetVisibility(true);
+		Card->Hide();
 
 		// Deck의 높이 변경
 		ChangeHeight();
@@ -125,6 +125,8 @@ void ADeck::Draw()
 			this->Destroy();
 		}
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("%d"), this->CardCount());
 }
 
 void ADeck::Split(TArray<AGamer*> Gamers, int32 Count)

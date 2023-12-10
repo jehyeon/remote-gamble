@@ -28,6 +28,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	// 덱 위에 카드 올리는 높이
+	UPROPERTY()
 	FVector Offset;
 
 public:	
@@ -38,10 +39,21 @@ public:
 	TArray<ACard*> Cards;
 
 	int32 CardCount();
+
+	UFUNCTION()
 	void Shuffle();
+
+	UFUNCTION()
 	void Draw();
+
+	UFUNCTION()
 	void Split(TArray<AGamer*> Gamers, int32 Count);
+
+	UFUNCTION()
 	void Divide(TArray<AGamer*> Gamers);
+
+	UFUNCTION()
 	void AddCard(ACard* Card);
+
 	void ChangeHeight();
 };
