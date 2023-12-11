@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Containers/Array.h"
+#include "Movable.h"
 #include "Deck.generated.h"
 
 class ACard;
 class AGamer;
 
 UCLASS()
-class REMOTEGAMBLE_API ADeck : public AActor
+class REMOTEGAMBLE_API ADeck : public AActor, public IMovable
 {
 	GENERATED_BODY()
 	

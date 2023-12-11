@@ -20,7 +20,7 @@ AGamerController::AGamerController()
 	bIsMovingObject = false;
 
 	TargetActor = nullptr;
-	MovingActorOffset = FVector(0.f, 0.f, 100.f);	// temp
+	MovingActorOffset = FVector(0.f, 0.f, 20.f);	// temp
 }
 
 //void AGamerController::OnPossess(APawn* InPawn)
@@ -208,12 +208,30 @@ void AGamerController::MoveToMouseCursor()
 			{
 				if (Hit.GetActor() != TargetActor)
 				{
+					UE_LOG(LogTemp, Warning, TEXT("띄우는 중!"));
+					TArray<UPrimitiveComponent*> Components;
+					TargetActor->GetComponents(Components);
+					for (UPrimitiveComponent* Component : Components)
+					{
+						Component->SetEnableGravity(false);
+					}
+
 					TargetActor->SetActorLocation(Hit.Location + MovingActorOffset);
 				}
 			}
 		}
 		else
 		{
+			if (TargetActor)
+			{
+				TArray<UPrimitiveComponent*> Components;
+				TargetActor->GetComponents(Components);
+				for (UPrimitiveComponent* Component : Components)
+				{
+					Component->SetEnableGravity(true);
+				}
+			}
+
 			bIsMovingObject = false;
 			TargetActor = nullptr;
 		}

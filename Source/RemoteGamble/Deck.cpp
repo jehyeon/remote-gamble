@@ -19,7 +19,7 @@ ADeck::ADeck()
 		Mesh->SetStaticMesh(SM.Object);
 	}
 
-	Offset = FVector(0.f, 0.f, 0.75f);
+	Offset = FVector(0.f, 0.f, 2.f);
 
 	// Physics & Collision 설정
 	Mesh->SetSimulatePhysics(true);
