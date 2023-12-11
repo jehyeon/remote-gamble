@@ -19,7 +19,7 @@ ADeck::ADeck()
 		Mesh->SetStaticMesh(SM.Object);
 	}
 
-	Offset = FVector(0.f, 0.f, 2.f);
+	Offset = FVector(0.f, 0.f, 5.f);
 
 	// Physics & Collision 설정
 	Mesh->SetSimulatePhysics(true);
@@ -111,6 +111,7 @@ void ADeck::Draw()
 		// Card 위치 설정
 		FVector CardLocation = this->GetActorLocation() + Offset;
 		Card->SetActorLocation(CardLocation);
+		Card->SetActorRotation(this->GetActorRotation());
 		Card->SetVisibility(true);
 		Card->Hide();
 

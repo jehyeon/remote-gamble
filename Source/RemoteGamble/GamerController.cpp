@@ -54,6 +54,9 @@ void AGamerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveRight", this, &AGamerController::MoveRight);
 	InputComponent->BindAxis("UpDown", this, &AGamerController::UpDown);
 
+	InputComponent->BindAxis("TurnLeft", this, &AGamerController::TurnLeft);
+	InputComponent->BindAxis("TurnRight", this, &AGamerController::TurnLeft);
+
 	InputComponent->BindAction("Roll", IE_Pressed, this, &AGamerController::Roll);
 	InputComponent->BindAction("Shuffle", IE_Pressed, this, &AGamerController::Shuffle);
 	InputComponent->BindAction("Draw", IE_Pressed, this, &AGamerController::Draw);
@@ -292,5 +295,13 @@ void AGamerController::OpenOrHideCard()
 					CardActor->Open();
 			}
 		}
+	}
+}
+
+void AGamerController::TurnLeft(float AxisValue)
+{
+	if (TargetActor && bIsMovingObject)
+	{
+		TargetActor->SetActorRotation(TargetActor->GetActorRotation() + AxisValue * FRotator(0.f, 1.f, 0.f));
 	}
 }

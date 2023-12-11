@@ -77,6 +77,9 @@ public:
 	UFUNCTION()
 	void OpenOrHideCard();
 
+	UFUNCTION()
+	void TurnLeft(float AxisValue);
+
 	// 마우스 현재 위치
 	void MoveToMouseCursor();
 };
