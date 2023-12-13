@@ -34,6 +34,24 @@ void ADeck::BeginPlay()
 	Super::BeginPlay();
 	FGenericPlatformMath::SRandInit(time(0));
 
+	this->CreateCards();
+	this->Shuffle();
+	this->SetBackMaterial();
+}
+
+// Called every frame
+void ADeck::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+int32 ADeck::CardCount()
+{
+	return Cards.Num();
+}
+
+void ADeck::CreateCards()
+{
 	// 53장 카드 생성(Joker 1장)
 	TArray<FString> CardShapeNames = { TEXT("spade"), TEXT("diamond"), TEXT("heart"), TEXT("club") };
 	for (int32 i = 0; i < CardShapeNames.Num(); i++)
@@ -73,19 +91,17 @@ void ADeck::BeginPlay()
 	ACard* JokerCard = GetWorld()->SpawnActor<ACard>(ACard::StaticClass(), this->GetActorLocation(), FRotator::ZeroRotator);
 	JokerCard->InitInDeck(TEXT("joker"));
 	Cards.Emplace(JokerCard);
-
-	this->Shuffle();
 }
 
-// Called every frame
-void ADeck::Tick(float DeltaTime)
+void ADeck::SetBackMaterial()
 {
-	Super::Tick(DeltaTime);
-}
-
-int32 ADeck::CardCount()
-{
-	return Cards.Num();
+	FString CardName = Cards[this->CardCount() - 1]->CardName;
+	FString MaterialName = TEXT("/Game/Textures/Cards/Mat_") + CardName + TEXT(".Mat_") + CardName;
+	UMaterial* Material = LoadObject<UMaterial>(nullptr, *MaterialName);
+	if (Material)
+	{
+		Mesh->SetMaterial(2, Material);
+	}
 }
 
 void ADeck::Shuffle() 
@@ -127,7 +143,7 @@ void ADeck::Draw()
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%d"), this->CardCount());
+	//UE_LOG(LogTemp, Warning, TEXT("%d"), this->CardCount());
 }
 
 void ADeck::Split(TArray<AGamer*> Gamers, int32 Count)

@@ -42,6 +42,12 @@ public:
 	int32 CardCount();
 
 	UFUNCTION()
+	void CreateCards();
+
+	UFUNCTION()
+	void SetBackMaterial();
+
+	UFUNCTION()
 	void Shuffle();
 
 	UFUNCTION()

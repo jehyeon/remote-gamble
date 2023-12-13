@@ -2,7 +2,6 @@
 
 
 #include "Card.h"
-
 #include "Insights/ViewModels/BaseTimingTrack.h"
 
 // Sets default values
@@ -64,15 +63,15 @@ void ACard::InitInDeck(FString Name)
 void ACard::Open()
 {
 	IsOpen = true;
-	FRotator CurrentRotation = this->GetActorRotation();
-	SetActorRotation(FRotator(0.f, GetActorRotation().Yaw, 0.f));
+	FRotator CurrentRotation = GetActorRotation();
+	SetActorRotation(FRotator(0.f, CurrentRotation.Yaw, 0.f));
 }
 
 void ACard::Hide()
 {
 	IsOpen = false;
-	FRotator CurrentRotation = this->GetActorRotation();
-	SetActorRotation(FRotator(180.f, GetActorRotation().Yaw, 0.f));
+	FRotator CurrentRotation = GetActorRotation();
+	SetActorRotation(FRotator(180.f, CurrentRotation.Yaw, 0.f));
 }
 
 void ACard::SetVisibility(bool IsVisible)
