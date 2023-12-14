@@ -36,7 +36,7 @@ void ADeck::BeginPlay()
 
 	this->CreateCards();
 	this->Shuffle();
-	this->SetBackMaterial();
+	bIsOpen = false;
 }
 
 // Called every frame
@@ -114,33 +114,45 @@ void ADeck::Shuffle()
 		Cards[newIndex] = temp;
 	}
 
+	this->SetBackMaterial();
 	//UE_LOG(LogTemp, Warning, TEXT("Shuffled : Top Card is now %s."), *Cards[0]->CardName);
 }
 
 void ADeck::Draw()
 {
+	// Card 지정 후 List에서 제거
 	if (this->CardCount() > 0)
 	{
-		ACard* Card = Cards[0];
-		Cards.RemoveAt(0);
+		int32 CardIndex;
+		if (bIsOpen)
+			CardIndex = this->CardCount() - 1;
+		else
+			CardIndex = 0;
+		ACard* Card = Cards[CardIndex];
+		Cards.RemoveAt(CardIndex);
 
-		// Card 위치 설정
+		// 카드 위치 설정
 		FVector CardLocation = this->GetActorLocation() + Offset;
 		Card->SetActorLocation(CardLocation);
 		Card->SetActorRotation(this->GetActorRotation());
 		Card->SetVisibility(true);
-		Card->Hide();
+
+		// 카드 Open 여부 설정
+		if (bIsOpen)
+			Card->Open();
+		else
+			Card->Hide();
 
 		// Deck의 높이 변경
 		ChangeHeight();
 
 		//UE_LOG(LogTemp, Warning, TEXT("%f, %s"), CardLocation.Z, *Card->GetName());
 
+		SetBackMaterial();
+
 		// 남은 카드가 0개였다면 Deck 제거
 		if (this->CardCount() == 0)
-		{
 			this->Destroy();
-		}
 	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("%d"), this->CardCount());
@@ -175,4 +187,19 @@ void ADeck::ChangeHeight()
 {
 	FVector NewScale = FVector(1.f, 1.f, this->CardCount() / 53.f);
 	SetActorScale3D(NewScale);
+}
+
+void ADeck::Invert()
+{
+	bIsOpen = !bIsOpen;
+
+	FRotator CurrentRotation = GetActorRotation();
+	if (bIsOpen)
+	{
+		SetActorRotation(FRotator(180.f, CurrentRotation.Yaw, 0.f));
+	}
+	else
+	{
+		SetActorRotation(FRotator(0.f, CurrentRotation.Yaw, 0.f));
+	}
 }

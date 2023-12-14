@@ -27,7 +27,7 @@ public:
 
 	// 카드 앞면(모양, 숫자)이 보이는 상태인지 <- 필요없으면 지우기
 	UPROPERTY(EditAnywhere, Category = "Info")
-	bool IsOpen;
+	bool bIsOpen;
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,6 +42,9 @@ public:
 
 	void Open();
 	void Hide();
+
+	UFUNCTION()
+	void Invert();
 
 	UFUNCTION()
 	void SetVisibility(bool IsVisible);

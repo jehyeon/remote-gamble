@@ -60,7 +60,7 @@ void AGamerController::SetupInputComponent()
 	InputComponent->BindAction("Roll", IE_Pressed, this, &AGamerController::Roll);
 	InputComponent->BindAction("Shuffle", IE_Pressed, this, &AGamerController::Shuffle);
 	InputComponent->BindAction("Draw", IE_Pressed, this, &AGamerController::Draw);
-	InputComponent->BindAction("OpenOrHideCard", IE_Pressed, this, &AGamerController::OpenOrHideCard);
+	InputComponent->BindAction("Invert", IE_Pressed, this, &AGamerController::Invert);
 }
 
 void AGamerController::PlayerTick(float DeltaTime)
@@ -277,23 +277,20 @@ void AGamerController::Draw()
 	}
 }
 
-void AGamerController::OpenOrHideCard()
+void AGamerController::Invert()
 {
 	FHitResult Hit;
 	GetHitResultUnderCursor(ECC_Visibility, false, Hit);
 
 	if (Hit.bBlockingHit)
 	{
-		if (Hit.Actor->IsA(ACard::StaticClass()))
+		UClass* ActorClass = Hit.Actor->GetClass();
+		if (ActorClass->ImplementsInterface(UTurnable::StaticClass()))
 		{
-			ACard* CardActor = Cast<ACard>(Hit.Actor);
-			if (CardActor)
-			{
-				if (CardActor->IsOpen)
-					CardActor->Hide();
-				else
-					CardActor->Open();
-			}
+			UObject* Object = Cast<UObject>(Hit.Actor);
+			UFunction* InvertFunction = Object->FindFunction(TEXT("Invert"));
+			if (InvertFunction)
+				Object->ProcessEvent(InvertFunction, nullptr);
 		}
 	}
 }

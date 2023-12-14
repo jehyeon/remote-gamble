@@ -6,13 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "Containers/Array.h"
 #include "Movable.h"
+#include "Turnable.h"
 #include "Deck.generated.h"
 
 class ACard;
 class AGamer;
 
 UCLASS()
-class REMOTEGAMBLE_API ADeck : public AActor, public IMovable
+class REMOTEGAMBLE_API ADeck : public AActor, public IMovable, public ITurnable
 {
 	GENERATED_BODY()
 	
@@ -23,6 +24,9 @@ public:
 	// Mesh
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(VisibleAnywhere, Category = "Info")
+	bool bIsOpen;
 
 protected:
 	// Called when the game starts or when spawned
@@ -61,6 +65,9 @@ public:
 
 	UFUNCTION()
 	void AddCard(ACard* Card);
+
+	UFUNCTION()
+	void Invert();
 
 	void ChangeHeight();
 };

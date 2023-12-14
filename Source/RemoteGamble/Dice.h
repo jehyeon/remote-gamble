@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Movable.h"
 #include "Rollable.h"
+#include "Turnable.h"
 #include "Components/BoxComponent.h"
 #include "Dice.generated.h"
 

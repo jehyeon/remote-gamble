@@ -62,16 +62,26 @@ void ACard::InitInDeck(FString Name)
 
 void ACard::Open()
 {
-	IsOpen = true;
+	bIsOpen = true;
 	FRotator CurrentRotation = GetActorRotation();
 	SetActorRotation(FRotator(0.f, CurrentRotation.Yaw, 0.f));
 }
 
 void ACard::Hide()
 {
-	IsOpen = false;
+	bIsOpen = false;
 	FRotator CurrentRotation = GetActorRotation();
 	SetActorRotation(FRotator(180.f, CurrentRotation.Yaw, 0.f));
+}
+
+void ACard::Invert()
+{
+	bIsOpen = !bIsOpen;
+	FRotator CurrentRotation = GetActorRotation();
+	if (bIsOpen)
+		SetActorRotation(FRotator(0.f, CurrentRotation.Yaw, 0.f));
+	else
+		SetActorRotation(FRotator(180.f, CurrentRotation.Yaw, 0.f));
 }
 
 void ACard::SetVisibility(bool IsVisible)

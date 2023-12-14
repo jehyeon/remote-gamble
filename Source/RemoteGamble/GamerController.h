@@ -75,7 +75,7 @@ public:
 	void Draw();
 
 	UFUNCTION()
-	void OpenOrHideCard();
+	void Invert();
 
 	UFUNCTION()
 	void TurnLeft(float AxisValue);
